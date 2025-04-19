@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DTech Form to PDF</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #eef2f3;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #2e8b57;
+      color: white;
+      cursor: pointer;
+    }
+    img {
+      display: none;
+      max-width: 100%;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>DTech PDF Generator</h2>
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="surname" placeholder="Surname">
+    <input type="number" id="age" placeholder="Age">
+    <input type="email" id="email" placeholder="Email">
+    <input type="tel" id="phone" placeholder="Phone Number">
+    <input type="file" id="photo" accept="image/*">
+    <img id="preview">
+    <button onclick="generatePDF()">Generate PDF</button>
+  </div>
+
+  <script>
+    const { jsPDF } = window.jspdf;
+
+    const photoInput = document.getElementById('photo');
+    const preview = document.getElementById('preview');
+    let imageData = "";
+
+    photoInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        imageData = e.target.result;
+        preview.src = imageData;
+        preview.style.display = "block";
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function generatePDF() {
+      const name = document.getElementById('name').value;
+      const surname = document.getElementById('surname').value;
+      const age = document.getElementById('age').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+
+      const doc = new jsPDF();
+      doc.setFontSize(14);
+      doc.text(`Name: ${name}`, 10, 20);
+      doc.text(`Surname: ${surname}`, 10, 30);
+      doc.text(`Age: ${age}`, 10, 40);
+      doc.text(`Email: ${email}`, 10, 50);
+      doc.text(`Phone Number: ${phone}`, 10, 60);
+
+      if (imageData) {
+        doc.addImage(imageData, 'JPEG', 10, 70, 80, 80);
+      }
+
+      const fileName = `profile_${Date.now()}.pdf`;
+      doc.save(fileName);
+    }
+  </script>
+</body>
+  </html>
