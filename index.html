@@ -47,6 +47,7 @@
     <input type="email" id="email" placeholder="Email">
     <input type="tel" id="phone" placeholder="Phone Number">
     <input type="file" id="photo" accept="image/*">
+    <input type="text" id="filename" placeholder="Enter PDF file name">
     <img id="preview">
     <button onclick="generatePDF()">Generate PDF</button>
   </div>
@@ -79,6 +80,7 @@
       const age = document.getElementById('age').value;
       const email = document.getElementById('email').value;
       const phone = document.getElementById('phone').value;
+      const filenameInput = document.getElementById('filename').value.trim();
 
       const doc = new jsPDF();
       doc.setFontSize(14);
@@ -92,9 +94,9 @@
         doc.addImage(imageData, 'JPEG', 10, 70, 80, 80);
       }
 
-      const fileName = `profile_${Date.now()}.pdf`;
+      const fileName = filenameInput ? `${filenameInput}.pdf` : `profile_${Date.now()}.pdf`;
       doc.save(fileName);
     }
   </script>
 </body>
-  </html>
+</html>
