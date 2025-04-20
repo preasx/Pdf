@@ -31,10 +31,10 @@
       color: white;
       cursor: pointer;
     }
-    img {
-      display: none;
+    .preview-container img {
       max-width: 100%;
       margin-top: 10px;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -46,32 +46,37 @@
     <input type="number" id="age" placeholder="Age">
     <input type="email" id="email" placeholder="Email">
     <input type="tel" id="phone" placeholder="Phone Number">
-    <input type="file" id="photo" accept="image/*">
+    <input type="file" id="photos" accept="image/*" multiple>
     <input type="text" id="filename" placeholder="Enter PDF file name">
-    <img id="preview">
+    <div class="preview-container" id="previewContainer"></div>
     <button onclick="generatePDF()">Generate PDF</button>
   </div>
 
   <script>
     const { jsPDF } = window.jspdf;
 
-    const photoInput = document.getElementById('photo');
-    const preview = document.getElementById('preview');
-    let imageData = "";
+    const photoInput = document.getElementById('photos');
+    const previewContainer = document.getElementById('previewContainer');
+    let imageList = [];
 
     photoInput.addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
+      imageList = [];
+      previewContainer.innerHTML = "";
 
-      reader.onload = function(e) {
-        imageData = e.target.result;
-        preview.src = imageData;
-        preview.style.display = "block";
-      };
+      Array.from(event.target.files).forEach(file => {
+        const reader = new FileReader();
 
-      if (file) {
+        reader.onload = function(e) {
+          const imgData = e.target.result;
+          imageList.push(imgData);
+
+          const img = document.createElement("img");
+          img.src = imgData;
+          previewContainer.appendChild(img);
+        };
+
         reader.readAsDataURL(file);
-      }
+      });
     });
 
     function generatePDF() {
@@ -83,16 +88,19 @@
       const filenameInput = document.getElementById('filename').value.trim();
 
       const doc = new jsPDF();
-      doc.setFontSize(14);
-      doc.text(`Name: ${name}`, 10, 20);
-      doc.text(`Surname: ${surname}`, 10, 30);
-      doc.text(`Age: ${age}`, 10, 40);
-      doc.text(`Email: ${email}`, 10, 50);
-      doc.text(`Phone Number: ${phone}`, 10, 60);
+      let y = 20;
 
-      if (imageData) {
-        doc.addImage(imageData, 'JPEG', 10, 70, 80, 80);
-      }
+      doc.setFontSize(14);
+      doc.text(`Name: ${name}`, 10, y); y += 10;
+      doc.text(`Surname: ${surname}`, 10, y); y += 10;
+      doc.text(`Age: ${age}`, 10, y); y += 10;
+      doc.text(`Email: ${email}`, 10, y); y += 10;
+      doc.text(`Phone Number: ${phone}`, 10, y); y += 20;
+
+      imageList.forEach((imgData, index) => {
+        if (index > 0) doc.addPage(); // add a new page for each additional image
+        doc.addImage(imgData, 'JPEG', 10, y, 180, 160); // fit within A4
+      });
 
       const fileName = filenameInput ? `${filenameInput}.pdf` : `profile_${Date.now()}.pdf`;
       doc.save(fileName);
