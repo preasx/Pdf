@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Click the Dot - Donate by Missing</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #f0f0f0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    #dot {
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    #score {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+  <div id="dot"></div>
+
+  <script>
+    const dot = document.getElementById("dot");
+    const scoreDisplay = document.getElementById("score");
+    let score = 0;
+
+    function moveDot() {
+      const x = Math.random() * (window.innerWidth - 50);
+      const y = Math.random() * (window.innerHeight - 50);
+      dot.style.left = x + "px";
+      dot.style.top = y + "px";
+    }
+
+    dot.addEventListener("click", function (e) {
+      e.stopPropagation(); // Prevent body click
+      score++;
+      scoreDisplay.textContent = "Score: " + score;
+      moveDot();
+    });
+
+    document.body.addEventListener("click", function () {
+      // Trigger popunder ad if dot wasn't clicked
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = '//conductorhimselfwhipped.com/06/70/0a/06700ae74ed6d9035f7f071031360cf5.js';
+      document.body.appendChild(script);
+    });
+
+    // Start the game
+    moveDot();
+    setInterval(moveDot, 3000); // move dot every 3 seconds
+  </script>
+</body>
+</html>
