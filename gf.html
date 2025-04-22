@@ -1,87 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dot Game for Charity</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click-to-Ad Counter</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: #f9f9f9;
       display: flex;
       justify-content: center;
       align-items: center;
+      background: #f0f0f0;
       font-family: Arial, sans-serif;
     }
 
-    #start-btn {
+    #clickButton {
       padding: 20px 40px;
-      font-size: 24px;
-      background: red;
+      background-color: #28a745;
       color: white;
+      font-size: 24px;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
-    #dot, #score {
-      display: none;
-    }
-
-    #dot {
-      width: 50px;
-      height: 50px;
-      background-color: red;
-      border-radius: 50%;
-      position: absolute;
-      cursor: pointer;
-    }
-
-    #score {
+    #clickCount {
       position: fixed;
       top: 10px;
       left: 10px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
     }
   </style>
-  <!-- Your popunder ad script -->
-  <script type='text/javascript' src='//conductorhimselfwhipped.com/06/70/0a/06700ae74ed6d9035f7f071031360cf5.js'></script>
 </head>
 <body>
-  <button id="start-btn">Click to Start (And Support Charity)</button>
-  <div id="score">Score: 0</div>
-  <div id="dot"></div>
+  <button id="clickButton">Click Me!</button>
+  <div id="clickCount">Clicks: 0</div>
 
   <script>
-    const startBtn = document.getElementById("start-btn");
-    const dot = document.getElementById("dot");
-    const scoreDisplay = document.getElementById("score");
-    let score = 0;
+    let clickCount = 0;
+    const clickButton = document.getElementById('clickButton');
+    const clickCountDisplay = document.getElementById('clickCount');
 
-    function moveDot() {
-      const x = Math.random() * (window.innerWidth - 50);
-      const y = Math.random() * (window.innerHeight - 50);
-      dot.style.left = x + "px";
-      dot.style.top = y + "px";
+    // URL for the popunder or direct link ad
+    const adURL = 'https://conductorhimselfwhipped.com/spymr251ew?key=ce76edf7e5c6e4907177e712dc143365';
+
+    // Function to open popunder and count clicks
+    function handleClick() {
+      clickCount++;
+      clickCountDisplay.textContent = "Clicks: " + clickCount;
+
+      // Open the popunder ad (or direct URL) when the button is clicked
+      const popunder = window.open(adURL, '_blank');
+      popunder.blur(); // To ensure the ad opens in the background
+      window.focus();  // Focus back on the current window
     }
 
-    dot.addEventListener("click", function (e) {
-      e.stopPropagation();
-      score++;
-      scoreDisplay.textContent = "Score: " + score;
-      moveDot();
-    });
-
-    startBtn.addEventListener("click", () => {
-      // Let the ad script use this click
-      startBtn.style.display = "none";
-      dot.style.display = "block";
-      scoreDisplay.style.display = "block";
-      moveDot();
-      setInterval(moveDot, 3000);
-    });
+    // Add click event listener
+    clickButton.addEventListener('click', handleClick);
   </script>
 </body>
 </html>
