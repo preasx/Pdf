@@ -3,14 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Click the Dot - Donate by Missing</title>
+  <title>Dot Game for Charity</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: #f0f0f0;
-      overflow: hidden;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-family: Arial, sans-serif;
+    }
+
+    #start-btn {
+      padding: 20px 40px;
+      font-size: 24px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    #dot, #score {
+      display: none;
     }
 
     #dot {
@@ -20,7 +36,6 @@
       border-radius: 50%;
       position: absolute;
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
 
     #score {
@@ -31,27 +46,20 @@
       font-weight: bold;
     }
   </style>
-  <!-- Preload the popunder ad script -->
+  <!-- Your popunder ad script -->
   <script type='text/javascript' src='//conductorhimselfwhipped.com/06/70/0a/06700ae74ed6d9035f7f071031360cf5.js'></script>
 </head>
 <body>
+  <button id="start-btn">Click to Start (And Support Charity)</button>
   <div id="score">Score: 0</div>
   <div id="dot"></div>
 
   <script>
+    const startBtn = document.getElementById("start-btn");
     const dot = document.getElementById("dot");
     const scoreDisplay = document.getElementById("score");
     let score = 0;
 
-    // Prevent ad trigger when dot is clicked
-    dot.addEventListener("click", function (e) {
-      e.stopPropagation(); // stop body click event
-      score++;
-      scoreDisplay.textContent = "Score: " + score;
-      moveDot();
-    });
-
-    // Move the dot to a random location
     function moveDot() {
       const x = Math.random() * (window.innerWidth - 50);
       const y = Math.random() * (window.innerHeight - 50);
@@ -59,9 +67,21 @@
       dot.style.top = y + "px";
     }
 
-    // Start the game
-    moveDot();
-    setInterval(moveDot, 3000);
+    dot.addEventListener("click", function (e) {
+      e.stopPropagation();
+      score++;
+      scoreDisplay.textContent = "Score: " + score;
+      moveDot();
+    });
+
+    startBtn.addEventListener("click", () => {
+      // Let the ad script use this click
+      startBtn.style.display = "none";
+      dot.style.display = "block";
+      scoreDisplay.style.display = "block";
+      moveDot();
+      setInterval(moveDot, 3000);
+    });
   </script>
 </body>
 </html>
