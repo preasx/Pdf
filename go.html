@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Item Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, textarea { display: block; margin-bottom: 10px; width: 300px; }
+    .output { margin-top: 20px; background: #f4f4f4; padding: 10px; border: 1px solid #ccc; }
+    code { white-space: pre-wrap; display: block; }
+  </style>
+</head>
+<body>
+
+  <h1>Generate Item HTML</h1>
+
+  <label>Item Name:</label>
+  <input type="text" id="itemName">
+
+  <label>Price (e.g., R900):</label>
+  <input type="text" id="itemPrice">
+
+  <label>Picture Name (e.g., item2):</label>
+  <input type="text" id="picName">
+
+  <label>Description:</label>
+  <textarea id="itemDesc"></textarea>
+
+  <label>Unique Code:</label>
+  <input type="text" id="itemCode">
+
+  <button onclick="generateHTML()">Generate HTML</button>
+
+  <div class="output">
+    <h2>Generated HTML:</h2>
+    <code id="outputCode"></code>
+  </div>
+
+  <script>
+    function generateHTML() {
+      const name = document.getElementById("itemName").value;
+      const price = document.getElementById("itemPrice").value;
+      const pic = document.getElementById("picName").value;
+      const desc = document.getElementById("itemDesc").value;
+      const code = document.getElementById("itemCode").value;
+
+      const html = `
+<div class="item">
+  <img src="Spics/${pic}.png" alt="${name} 1" onclick="showImageModal(this.src)">
+  <img src="Spics/${pic}b.png" alt="${name} 2" onclick="showImageModal(this.src)">
+  <h2>${name}</h2>
+  <p class="desc">${desc}</p>
+  <p class="price">${price}</p>
+  <button class="buy-button" onclick="openBuyForm('${name}', '${price}', '${code}')">Buy This Item</button>
+</div>`;
+
+      document.getElementById("outputCode").textContent = html;
+    }
+  </script>
+
+</body>
+</html>
