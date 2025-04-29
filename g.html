@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -54,7 +53,6 @@
       display: none;
     }
   </style>
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
 <body>
   <h1>List Your Item to Sell or Rent</h1>
@@ -63,79 +61,75 @@
     <select id="hasPassword">
       <option value="no">No, this is my first time</option>
       <option value="yes">Yes, I already have one</option>
-    </select>
+    </select><div id="passwordWrapper" class="optionalSection">
+  <label for="password">Enter your password</label>
+  <input type="text" id="password" placeholder="Enter your DTech password" />
+</div>
 
-    <div id="passwordWrapper" class="optionalSection">
-      <label for="password">Enter your password</label>
-      <input type="text" id="password" placeholder="Enter your DTech password" />
-    </div>
+<div id="personalInfoSection">
+  <label for="name">Name and Surname</label>
+  <input type="text" id="name" required />
 
-    <div id="personalInfoSection">
-      <label for="name">Name and Surname</label>
-      <input type="text" id="name" required />
+  <label for="age">Age</label>
+  <input type="number" id="age" required />
 
-      <label for="age">Age</label>
-      <input type="number" id="age" required />
+  <label for="gender">Gender</label>
+  <select id="gender">
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+  </select>
 
-      <label for="gender">Gender</label>
-      <select id="gender">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
+  <label for="phone">Phone Number</label>
+  <input type="tel" id="phone" required />
 
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" required />
+  <label for="email">Email</label>
+  <input type="email" id="email" required />
+</div>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" required />
-    </div>
+<label for="choice">Are you selling or renting?</label>
+<select id="choice">
+  <option value="Selling">Sell</option>
+  <option value="Renting">Rent</option>
+</select>
 
-    <label for="choice">Are you selling or renting?</label>
-    <select id="choice">
-      <option value="Selling">Sell</option>
-      <option value="Renting">Rent</option>
-    </select>
+<label for="item">Item Name</label>
+<input type="text" id="item" required />
 
-    <label for="item">Item Name</label>
-    <input type="text" id="item" required />
+<label for="price">Price (in Rands)</label>
+<input type="number" id="price" required />
 
-    <label for="price">Price (in Rands)</label>
-    <input type="number" id="price" required />
+<label for="info">Additional Info</label>
+<textarea id="info" rows="4"></textarea>
 
-    <label for="info">Additional Info</label>
-    <textarea id="info" rows="4"></textarea>
+<p style="margin-top:1rem;font-weight:500;color:#4b5563">
+  Please remember to attach the following files manually:
+</p>
+<ul style="color:#374151" id="attachmentsList">
+  <li>Photo of your ID or student card</li>
+  <li>Clear photo of your face</li>
+  <li>Photo of the item you want to sell or rent</li>
+</ul>
 
-    <p style="margin-top:1rem;font-weight:500;color:#4b5563">
-      Please remember to attach the following files manually in the email:
-    </p>
-    <ul style="color:#374151" id="attachmentsList">
-      <li>Photo of your ID or student card</li>
-      <li>Clear photo of your face</li>
-      <li>Photo of the item you want to sell or rent</li>
-    </ul>
+<button type="submit">Submit</button>
 
-    <button type="submit">Submit via Email</button>
-  </form>
+  </form>  <script type="module">
+    import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+    window.emailjs = emailjs;
 
-  <script>
-    emailjs.init("6NQYc1zVinQThzGS2");
+    emailjs.init('6NQYc1zVinQThzGS2', { publicKey: '6NQYc1zVinQThzGS2' });
 
+    const form = document.getElementById('listingForm');
     const hasPasswordSelect = document.getElementById('hasPassword');
-    const personalInfoSection = document.getElementById('personalInfoSection');
     const passwordWrapper = document.getElementById('passwordWrapper');
+    const personalInfoSection = document.getElementById('personalInfoSection');
     const attachmentsList = document.getElementById('attachmentsList');
 
     hasPasswordSelect.addEventListener('change', function () {
-      const value = this.value;
-      const personalInputs = personalInfoSection.querySelectorAll('input, select');
-
-      if (value === 'yes') {
+      if (this.value === 'yes') {
         personalInfoSection.style.display = 'none';
         passwordWrapper.style.display = 'block';
         attachmentsList.innerHTML = "<li>Photo of the item you want to sell or rent</li>";
-        personalInputs.forEach(input => input.required = false);
-        document.getElementById('password').required = true;
       } else {
         personalInfoSection.style.display = 'block';
         passwordWrapper.style.display = 'none';
@@ -144,42 +138,45 @@
           <li>Clear photo of your face</li>
           <li>Photo of the item you want to sell or rent</li>
         `;
-        personalInputs.forEach(input => input.required = true);
-        document.getElementById('password').required = false;
       }
     });
 
     function generatePassword(length = 8) {
       const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return password;
     }
 
-    document.getElementById("listingForm").addEventListener("submit", function (e) {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const hasPassword = document.getElementById("hasPassword").value;
-      const data = {
-        name: hasPassword === 'yes' ? "Returning User" : document.getElementById("name").value,
-        email: hasPassword === 'yes' ? "N/A" : document.getElementById("email").value,
-        age: hasPassword === 'yes' ? "-" : document.getElementById("age").value,
-        gender: hasPassword === 'yes' ? "-" : document.getElementById("gender").value,
-        phone: hasPassword === 'yes' ? "-" : document.getElementById("phone").value,
-        password: hasPassword === 'yes' ? document.getElementById("password").value : generatePassword(),
-        item: document.getElementById("item").value,
-        choice: document.getElementById("choice").value,
-        price: document.getElementById("price").value,
-        info: document.getElementById("info").value,
-        time: new Date().toLocaleString()
+      const hasPassword = hasPasswordSelect.value;
+      const templateParams = {
+        name: hasPassword === 'yes' ? 'Returning User' : document.getElementById('name').value,
+        time: new Date().toLocaleString(),
+        message: ''
       };
 
-      emailjs.send("service_wejpfmd", "template_qspvvvi", data)
+      if (hasPassword === 'yes') {
+        templateParams.message = `Password: ${document.getElementById('password').value}`;
+      } else {
+        const newPassword = generatePassword();
+        templateParams.message = `Age: ${document.getElementById('age').value}\nGender: ${document.getElementById('gender').value}\nPhone: ${document.getElementById('phone').value}\nEmail: ${document.getElementById('email').value}\nNew Password: ${newPassword}`;
+      }
+
+      templateParams.message += `\n\nChoice: ${document.getElementById('choice').value}\nItem: ${document.getElementById('item').value}\nPrice: R${document.getElementById('price').value}\nInfo: ${document.getElementById('info').value}`;
+
+      emailjs.send('service_wejpfmd', 'template_qspvvvi', templateParams)
         .then(() => {
-          alert("Listing submitted successfully!");
+          alert('Your request was sent successfully!');
           window.location.href = "thankyou.html";
-        }, (err) => {
-          alert("Failed to send listing. Please try again.\n" + JSON.stringify(err));
+        }, (error) => {
+          alert('Failed to send request. Please try again.');
+          console.error(error);
         });
     });
-  </script>
-</body>
+  </script></body>
 </html>
