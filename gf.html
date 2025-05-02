@@ -2,63 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>DTech Poster</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Click-to-Ad Counter</title>
   <style>
     body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f0f0f0;
       font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f8f9fa;
     }
-
-    #clickButton {
-      padding: 20px 40px;
-      background-color: #28a745;
-      color: white;
-      font-size: 24px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    #clickCount {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      font-size: 20px;
-      font-weight: bold;
+    .poster-container {
+      max-width: 600px;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
-  <button id="clickButton">Click Me!</button>
-  <div id="clickCount">Clicks: 0</div>
-
-  <script>
-    let clickCount = 0;
-    const clickButton = document.getElementById('clickButton');
-    const clickCountDisplay = document.getElementById('clickCount');
-
-    // URL for the popunder or direct link ad
-    const adURL = 'https://conductorhimselfwhipped.com/spymr251ew?key=ce76edf7e5c6e4907177e712dc143365';
-
-    // Function to open popunder and count clicks
-    function handleClick() {
-      clickCount++;
-      clickCountDisplay.textContent = "Clicks: " + clickCount;
-
-      // Open the popunder ad (or direct URL) when the button is clicked
-      const popunder = window.open(adURL, '_blank');
-      popunder.blur(); // To ensure the ad opens in the background
-      window.focus();  // Focus back on the current window
-    }
-
-    // Add click event listener
-    clickButton.addEventListener('click', handleClick);
-  </script>
+  <div class="poster-container">
+    <div style="position: relative; width: 100%; height: 0; padding-top: 141.4286%;
+      padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em;
+      margin-bottom: 0.9em; overflow: hidden; border-radius: 8px; will-change: transform;">
+      <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0;
+        left: 0; border: none; padding: 0; margin: 0;"
+        src="https://www.canva.com/design/DAGmOY-AQsc/lOrulvcXunHI5Phc6QVz9Q/view?embed"
+        allowfullscreen="allowfullscreen" allow="fullscreen">
+      </iframe>
+    </div>
+    <a href="https://www.canva.com/design/DAGmOY-AQsc/lOrulvcXunHI5Phc6QVz9Q/view?utm_content=DAGmOY-AQsc&utm_campaign=designshare&utm_medium=embeds&utm_source=link"
+       target="_blank" rel="noopener">
+       Black & Yellow Modern Exclusive Furniture Poster
+    </a> by Seakwa Jonas “Lefa” Mochebane
+  </div>
 </body>
 </html>
