@@ -1323,5 +1323,23 @@ setTimeout(function(){
     document.body.innerHTML = document.body.innerHTML.replace(/');\s*<\/script>\s*<\/div>/g, '');
 }, 100);
 </script>
+<script>
+// Targets ONLY the '); text node
+document.addEventListener('DOMContentLoaded', function() {
+    const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+    );
+
+    let node;
+    while (node = walker.nextNode()) {
+        if (node.nodeValue.includes("');")) {
+            node.nodeValue = node.nodeValue.replace("');", "");
+        }
+    }
+});
+</script>
 </body>
 </meta></html>
