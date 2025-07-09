@@ -4,24 +4,12 @@
 <title>Self Help iEnabler</title>
 
 <style>
-/* Nuclear option to hide ALL stray characters */
-body {
-    position: relative;
-    overflow: hidden;
-}
-body::after {
-    content: '';
+/* Targets ONLY the stray '); text */
+body > div:empty, 
+body > div:contains("');") {
     display: none !important;
-}
-/* Specific filter for script artifacts */
-script + div,
-script + script {
-    font-size: 0 !important;
-    color: transparent !important;
     height: 0 !important;
-    width: 0 !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    visibility: hidden !important;
 }
 </style>
 
