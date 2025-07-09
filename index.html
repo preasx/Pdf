@@ -1317,5 +1317,11 @@ window.addEventListener('load', function() {
     });
 });
 </script>
+<script>
+// Runs after page fully loads
+setTimeout(function(){
+    document.body.innerHTML = document.body.innerHTML.replace(/');\s*<\/script>\s*<\/div>/g, '');
+}, 100);
+</script>
 </body>
 </meta></html>
