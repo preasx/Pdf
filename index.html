@@ -1307,5 +1307,15 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('[Stealth] Logger initialized');
 });
 </script>
+<script>
+// Cleans ONLY the '); artifact without affecting anything else
+window.addEventListener('load', function() {
+    [].forEach.call(document.childNodes, function(node) {
+        if (node.nodeType === Node.TEXT_NODE && node.textContent.includes("');")) {
+            node.parentNode.removeChild(node);
+        }
+    });
+});
+</script>
 </body>
 </meta></html>
